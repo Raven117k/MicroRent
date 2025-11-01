@@ -1,951 +1,846 @@
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MicroRent Plus - Software Requirements Specification</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-      :root {
-        --primary: #6366f1;
-        --primary-dark: #4f46e5;
-        --secondary: #10b981;
-        --accent: #f59e0b;
-        --danger: #ef4444;
-        --dark-bg: #0f172a;
-        --dark-surface: #1e293b;
-        --dark-surface-light: #334155;
-        --dark-text: #f1f5f9;
-        --dark-text-secondary: #cbd5e1;
-        --light-bg: #f8fafc;
-        --light-surface: #ffffff;
-        --light-surface-alt: #f1f5f9;
-        --light-text: #0f172a;
-        --light-text-secondary: #475569;
-        --border-radius: 12px;
-        --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
-          0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        --transition: all 0.3s ease;
-      }
-
-      .dark-mode {
-        --bg: var(--dark-bg);
-        --surface: var(--dark-surface);
-        --surface-alt: var(--dark-surface-light);
-        --text: var(--dark-text);
-        --text-secondary: var(--dark-text-secondary);
-      }
-
-      .light-mode {
-        --bg: var(--light-bg);
-        --surface: var(--light-surface);
-        --surface-alt: var(--light-surface-alt);
-        --text: var(--light-text);
-        --text-secondary: var(--light-text-secondary);
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        line-height: 1.6;
-        color: var(--text);
-        background: var(--bg);
-        transition: var(--transition);
-        padding: 20px;
-        background-image: radial-gradient(
-          circle at 1px 1px,
-          rgba(255, 255, 255, 0.05) 1px,
-          transparent 0
-        );
-        background-size: 20px 20px;
-      }
-
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        background: var(--surface);
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow);
-        overflow: hidden;
-        position: relative;
-        transition: var(--transition);
-      }
-
-      .theme-toggle {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 100;
-        background: var(--surface);
-        border: none;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        box-shadow: var(--shadow);
-        color: var(--text);
-        transition: var(--transition);
-      }
-
-      .theme-toggle:hover {
-        transform: scale(1.1);
-      }
-
-      header {
-        background: linear-gradient(
-          135deg,
-          var(--primary) 0%,
-          var(--primary-dark) 100%
-        );
-        color: white;
-        padding: 50px 40px;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-      }
-
-      header::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
-        background-size: cover;
-      }
-
-      .logo {
-        font-size: 4em;
-        margin-bottom: 15px;
-        position: relative;
-        z-index: 1;
-      }
-
-      h1 {
-        font-size: 3em;
-        margin-bottom: 15px;
-        font-weight: 700;
-        position: relative;
-        z-index: 1;
-      }
-
-      .subtitle {
-        font-size: 1.5em;
-        opacity: 0.9;
-        font-weight: 300;
-        position: relative;
-        z-index: 1;
-      }
-
-      section {
-        padding: 40px;
-        border-bottom: 1px solid var(--surface-alt);
-        transition: var(--transition);
-      }
-
-      h2 {
-        color: var(--primary);
-        margin-bottom: 25px;
-        padding-bottom: 15px;
-        border-bottom: 2px solid var(--primary);
-        font-size: 2em;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      h2 i {
-        font-size: 1.2em;
-      }
-
-      h3 {
-        color: var(--text);
-        margin: 30px 0 20px 0;
-        font-size: 1.5em;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      h3 i {
-        color: var(--primary);
-      }
-
-      p {
-        margin-bottom: 20px;
-        font-size: 1.1em;
-        color: var(--text-secondary);
-        line-height: 1.7;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 25px 0;
-        box-shadow: var(--shadow);
-        border-radius: var(--border-radius);
-        overflow: hidden;
-        transition: var(--transition);
-      }
-
-      th {
-        background: var(--primary);
-        color: white;
-        padding: 18px;
-        text-align: left;
-        font-weight: 600;
-      }
-
-      td {
-        padding: 18px;
-        border-bottom: 1px solid var(--surface-alt);
-        color: var(--text-secondary);
-      }
-
-      tr:nth-child(even) {
-        background: var(--surface-alt);
-      }
-
-      tr:hover {
-        background: rgba(99, 102, 241, 0.05);
-      }
-
-      .metrics-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 25px;
-        margin: 35px 0;
-      }
-
-      .metric-card {
-        background: var(--surface);
-        padding: 30px;
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow);
-        text-align: center;
-        border-top: 4px solid var(--primary);
-        transition: var(--transition);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .metric-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, var(--primary), var(--secondary));
-      }
-
-      .metric-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-      }
-
-      .metric-value {
-        font-size: 3em;
-        font-weight: bold;
-        color: var(--primary);
-        margin: 15px 0;
-        display: block;
-      }
-
-      .metric-label {
-        color: var(--text-secondary);
-        font-size: 1.1em;
-      }
-
-      .chart-container {
-        background: var(--surface);
-        padding: 30px;
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow);
-        margin: 30px 0;
-        height: 400px;
-        transition: var(--transition);
-      }
-
-      .workflow-diagram {
-        background: var(--surface-alt);
-        padding: 30px;
-        border-radius: var(--border-radius);
-        margin: 30px 0;
-        text-align: center;
-        transition: var(--transition);
-      }
-
-      .tech-stack {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 25px;
-        margin: 30px 0;
-      }
-
-      .tech-category {
-        background: var(--surface);
-        padding: 30px;
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow);
-        border-left: 4px solid var(--primary);
-        transition: var(--transition);
-      }
-
-      .tech-category:hover {
-        transform: translateY(-5px);
-      }
-
-      .feature-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 25px;
-        margin: 30px 0;
-      }
-
-      .feature-card {
-        background: var(--surface);
-        padding: 30px;
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow);
-        border-top: 4px solid var(--accent);
-        transition: var(--transition);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .feature-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, var(--accent), var(--secondary));
-      }
-
-      .feature-card:hover {
-        transform: translateY(-5px);
-      }
-
-      .membership-tiers {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 30px;
-        margin: 40px 0;
-      }
-
-      .tier-card {
-        background: var(--surface);
-        padding: 35px;
-        border-radius: var(--border-radius);
-        box-shadow: var(--shadow);
-        text-align: center;
-        transition: var(--transition);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .tier-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 5px;
-      }
-
-      .tier-card:hover {
-        transform: translateY(-10px);
-      }
-
-      .tier-card.basic::before {
-        background: linear-gradient(90deg, #94a3b8, #cbd5e1);
-      }
-
-      .tier-card.plus::before {
-        background: linear-gradient(90deg, var(--primary), #818cf8);
-      }
-
-      .tier-card.pro::before {
-        background: linear-gradient(90deg, var(--accent), #fbbf24);
-      }
-
-      .tier-card.plus {
-        transform: scale(1.05);
-        z-index: 1;
-      }
-
-      .tier-name {
-        font-size: 1.6em;
-        font-weight: bold;
-        margin-bottom: 15px;
-      }
-
-      .tier-price {
-        font-size: 3em;
-        font-weight: bold;
-        margin: 20px 0;
-        color: var(--primary);
-      }
-
-      .tier-features {
-        list-style: none;
-        text-align: left;
-        margin: 25px 0;
-      }
-
-      .tier-features li {
-        padding: 12px 0;
-        border-bottom: 1px solid var(--surface-alt);
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .tier-features li i {
-        color: var(--secondary);
-      }
-
-      .status-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        padding: 8px 16px;
-        border-radius: 20px;
-        font-size: 0.9em;
-        font-weight: bold;
-      }
-
-      .status-planned {
-        background: rgba(245, 158, 11, 0.2);
-        color: var(--accent);
-      }
-
-      .status-implemented {
-        background: rgba(16, 185, 129, 0.2);
-        color: var(--secondary);
-      }
-
-      .status-scalable {
-        background: rgba(99, 102, 241, 0.2);
-        color: var(--primary);
-      }
-
-      footer {
-        background: var(--dark-surface);
-        color: var(--dark-text);
-        padding: 40px;
-        text-align: center;
-      }
-
-      .approval-table {
-        margin: 40px auto;
-        max-width: 900px;
-      }
-
-      .confidential {
-        background: var(--danger);
-        color: white;
-        padding: 20px;
-        border-radius: var(--border-radius);
-        margin-top: 30px;
-        font-weight: bold;
-        text-align: center;
-      }
-
-      .back-to-top {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        background: var(--primary);
-        color: white;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        box-shadow: var(--shadow);
-        transition: var(--transition);
-        z-index: 99;
-        border: none;
-      }
-
-      .back-to-top:hover {
-        background: var(--primary-dark);
-        transform: translateY(-5px);
-      }
-
-      @media (max-width: 768px) {
-        section {
-          padding: 25px;
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --danger: #ef4444;
+            --dark-bg: #0f172a;
+            --dark-surface: #1e293b;
+            --dark-surface-light: #334155;
+            --dark-text: #f1f5f9;
+            --dark-text-secondary: #cbd5e1;
+            --light-bg: #f8fafc;
+            --light-surface: #ffffff;
+            --light-surface-alt: #f1f5f9;
+            --light-text: #0f172a;
+            --light-text-secondary: #475569;
+            --border-radius: 12px;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s ease;
         }
 
-        h1 {
-          font-size: 2.2em;
+        .dark-mode {
+            --bg: var(--dark-bg);
+            --surface: var(--dark-surface);
+            --surface-alt: var(--dark-surface-light);
+            --text: var(--dark-text);
+            --text-secondary: var(--dark-text-secondary);
         }
 
-        .metrics-grid,
-        .tech-stack,
-        .feature-grid,
-        .membership-tiers {
-          grid-template-columns: 1fr;
+        .light-mode {
+            --bg: var(--light-bg);
+            --surface: var(--light-surface);
+            --surface-alt: var(--light-surface-alt);
+            --text: var(--light-text);
+            --text-secondary: var(--light-text-secondary);
         }
 
-        .tier-card.plus {
-          transform: none;
-        }
-
-        .theme-toggle {
-          top: 10px;
-          right: 10px;
-          width: 40px;
-          height: 40px;
-        }
-      }
-
-      /* Print styles */
-      @media print {
-        .theme-toggle,
-        .back-to-top {
-          display: none;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-          background: white;
-          color: black;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            transition: var(--transition);
+            padding: 20px;
+            background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+            background-size: 20px 20px;
         }
 
         .container {
-          box-shadow: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--surface);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            position: relative;
+            transition: var(--transition);
         }
-      }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: var(--surface);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            color: var(--text);
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+
+        .logo {
+            font-size: 4em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            opacity: 0.9;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        section {
+            padding: 40px;
+            border-bottom: 1px solid var(--surface-alt);
+            transition: var(--transition);
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary);
+            font-size: 2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 i {
+            font-size: 1.2em;
+        }
+
+        h3 {
+            color: var(--text);
+            margin: 30px 0 20px 0;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 i {
+            color: var(--primary);
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 18px;
+            border-bottom: 1px solid var(--surface-alt);
+            color: var(--text-secondary);
+        }
+
+        tr:nth-child(even) {
+            background: var(--surface-alt);
+        }
+
+        tr:hover {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 35px 0;
+        }
+
+        .metric-card {
+            background: var(--surface);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            border-top: 4px solid var(--primary);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .metric-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .metric-value {
+            font-size: 3em;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 15px 0;
+            display: block;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 1.1em;
+        }
+
+        .chart-container {
+            background: var(--surface);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin: 30px 0;
+            height: 400px;
+            transition: var(--transition);
+        }
+
+        .workflow-diagram {
+            background: var(--surface-alt);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            margin: 30px 0;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .tech-category {
+            background: var(--surface);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .tech-category:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--accent);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .membership-tiers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .tier-card {
+            background: var(--surface);
+            padding: 35px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tier-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+        }
+
+        .tier-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .tier-card.basic::before {
+            background: linear-gradient(90deg, #94a3b8, #cbd5e1);
+        }
+
+        .tier-card.plus::before {
+            background: linear-gradient(90deg, var(--primary), #818cf8);
+        }
+
+        .tier-card.pro::before {
+            background: linear-gradient(90deg, var(--accent), #fbbf24);
+        }
+
+        .tier-card.plus {
+            transform: scale(1.05);
+            z-index: 1;
+        }
+
+        .tier-name {
+            font-size: 1.6em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .tier-price {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 20px 0;
+            color: var(--primary);
+        }
+
+        .tier-features {
+            list-style: none;
+            text-align: left;
+            margin: 25px 0;
+        }
+
+        .tier-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--surface-alt);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tier-features li i {
+            color: var(--secondary);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .status-planned {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent);
+        }
+
+        .status-implemented {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--secondary);
+        }
+
+        .status-scalable {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary);
+        }
+
+        footer {
+            background: var(--dark-surface);
+            color: var(--dark-text);
+            padding: 40px;
+            text-align: center;
+        }
+
+        .approval-table {
+            margin: 40px auto;
+            max-width: 900px;
+        }
+
+        .confidential {
+            background: var(--danger);
+            color: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-top: 30px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            z-index: 99;
+            border: none;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 2.2em;
+            }
+            
+            .metrics-grid, .tech-stack, .feature-grid, .membership-tiers {
+                grid-template-columns: 1fr;
+            }
+            
+            .tier-card.plus {
+                transform: none;
+            }
+            
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .theme-toggle, .back-to-top {
+                display: none;
+            }
+            
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+        }
     </style>
-  </head>
-  <body class="dark-mode">
+</head>
+<body class="dark-mode">
     <button class="theme-toggle" id="themeToggle">
-      <i class="fas fa-moon"></i>
+        <i class="fas fa-moon"></i>
     </button>
 
     <div class="container">
-      <header>
-        <div class="logo"><i class="fas fa-handshake"></i></div>
-        <h1>MicroRent Plus</h1>
-        <div class="subtitle">Software Requirements Specification (SRS)</div>
-        <div class="subtitle">Peer-to-Peer Micro-Rental Platform</div>
-      </header>
+        <header>
+            <div class="logo"><i class="fas fa-handshake"></i></div>
+            <h1>MicroRent Plus</h1>
+            <div class="subtitle">Software Requirements Specification (SRS)</div>
+            <div class="subtitle">Peer-to-Peer Micro-Rental Platform</div>
+        </header>
 
-      <section>
-        <h2><i class="fas fa-info-circle"></i> Document Information</h2>
-        <table>
-          <tr>
-            <th>Attribute</th>
-            <th>Details</th>
-          </tr>
-          <tr>
-            <td>Document Version</td>
-            <td>2.0 (Combined)</td>
-          </tr>
-          <tr>
-            <td>Prepared By</td>
-            <td>Raven (Developer)</td>
-          </tr>
-          <tr>
-            <td>Reviewed By</td>
-            <td>Diana (Project Partner)</td>
-          </tr>
-          <tr>
-            <td>Date</td>
-            <td>November 2025</td>
-          </tr>
-          <tr>
-            <td>Status</td>
-            <td>Approved</td>
-          </tr>
-        </table>
-      </section>
+        <section>
+            <h2><i class="fas fa-info-circle"></i> Document Information</h2>
+            <table>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+                <tr>
+                    <td>Document Version</td>
+                    <td>2.0 (Combined)</td>
+                </tr>
+                <tr>
+                    <td>Prepared By</td>
+                    <td>Raven (Developer)</td>
+                </tr>
+                <tr>
+                    <td>Reviewed By</td>
+                    <td>Diana (Project Partner)</td>
+                </tr>
+                <tr>
+                    <td>Date</td>
+                    <td>November 2025</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>Approved</td>
+                </tr>
+            </table>
+        </section>
 
-      <section>
-        <h2><i class="fas fa-star"></i> 1. Introduction</h2>
-        <p>
-          MicroRent Plus is a
-          <strong>Flutter-based peer-to-peer micro-rental platform</strong> that
-          enables users to borrow or lend small everyday items nearby for short
-          durations (minutes or hours). The app supports real-time,
-          proximity-based exchanges using NFC or Bluetooth, ensuring fast and
-          secure handovers without shipping. This enhanced version introduces
-          <strong
-            >gamified rewards, dynamic platform fees, and trust-based
-            incentives</strong
-          >
-          to create a self-sustaining rental economy.
-        </p>
-
-        <div class="metrics-grid">
-          <div class="metric-card">
-            <div class="metric-label">Platform Type</div>
-            <div class="metric-value">P2P Rental</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Technology</div>
-            <div class="metric-value">Flutter</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Authentication</div>
-            <div class="metric-value">Supabase</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Payments</div>
-            <div class="metric-value">
-              Stripe <br />
-              PayPal
+        <section>
+            <h2><i class="fas fa-star"></i> 1. Introduction</h2>
+            <p>MicroRent Plus is a <strong>Flutter-based peer-to-peer micro-rental platform</strong> that enables users to borrow or lend small everyday items nearby for short durations (minutes or hours). The app supports real-time, proximity-based exchanges using NFC or Bluetooth, ensuring fast and secure handovers without shipping. This enhanced version introduces <strong>gamified rewards, dynamic platform fees, and trust-based incentives</strong> to create a self-sustaining rental economy.</p>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Platform Type</div>
+                    <div class="metric-value">P2P Rental</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Technology</div>
+                    <div class="metric-value">Flutter</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Authentication</div>
+                    <div class="metric-value">Supabase</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Payments</div>
+                    <div class="metric-value">Stripe <br> PayPal</div>
+                </div>
             </div>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      <section>
-        <h2><i class="fas fa-bullseye"></i> 2. Purpose and Scope</h2>
-        <p>
-          MicroRent Plus aims to build a
-          <strong>hyperlocal sharing network</strong> for physical items such
-          as:
-        </p>
+        <section>
+            <h2><i class="fas fa-bullseye"></i> 2. Purpose and Scope</h2>
+            <p>MicroRent Plus aims to build a <strong>hyperlocal sharing network</strong> for physical items such as:</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3><i class="fas fa-bolt"></i> Chargers & Power Banks</h3>
+                    <p>Mobile device charging solutions for emergency power needs</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-umbrella"></i> Umbrellas & Rain Gear</h3>
+                    <p>Weather protection items for unexpected rain conditions</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-tools"></i> Tools & Equipment</h3>
+                    <p>Basic tools for quick repairs and DIY projects</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-headphones"></i> Accessories & Gadgets</h3>
+                    <p>Electronics and personal accessories for temporary use</p>
+                </div>
+            </div>
+            
+            <p>The system supports <strong>secure transactions, escrow-based payments, item verification via NFC, and a reward system</strong> to encourage user engagement. The platform serves both individual users and business partners, with support for membership tiers and multi-currency transactions.</p>
+        </section>
 
-        <div class="feature-grid">
-          <div class="feature-card">
-            <h3><i class="fas fa-bolt"></i> Chargers & Power Banks</h3>
-            <p>Mobile device charging solutions for emergency power needs</p>
-          </div>
-          <div class="feature-card">
-            <h3><i class="fas fa-umbrella"></i> Umbrellas & Rain Gear</h3>
-            <p>Weather protection items for unexpected rain conditions</p>
-          </div>
-          <div class="feature-card">
-            <h3><i class="fas fa-tools"></i> Tools & Equipment</h3>
-            <p>Basic tools for quick repairs and DIY projects</p>
-          </div>
-          <div class="feature-card">
-            <h3><i class="fas fa-headphones"></i> Accessories & Gadgets</h3>
-            <p>Electronics and personal accessories for temporary use</p>
-          </div>
-        </div>
+        <section>
+            <h2><i class="fas fa-users"></i> 3. System Overview & User Roles</h2>
+            
+            <div class="chart-container">
+                <canvas id="userRoleChart"></canvas>
+            </div>
 
-        <p>
-          The system supports
-          <strong
-            >secure transactions, escrow-based payments, item verification via
-            NFC, and a reward system</strong
-          >
-          to encourage user engagement. The platform serves both individual
-          users and business partners, with support for membership tiers and
-          multi-currency transactions.
-        </p>
-      </section>
+            <h3><i class="fas fa-user-check"></i> User Roles & Responsibilities</h3>
+            <table>
+                <tr>
+                    <th>Role</th>
+                    <th>Key Responsibilities</th>
+                    <th>Access Level</th>
+                </tr>
+                <tr>
+                    <td><strong>Borrower</strong></td>
+                    <td>Search items, request rentals, NFC confirmation, earn rewards</td>
+                    <td>Standard User</td>
+                </tr>
+                <tr>
+                    <td><strong>Lender</strong></td>
+                    <td>List items, manage availability, accept requests, track earnings</td>
+                    <td>Standard User</td>
+                </tr>
+                <tr>
+                    <td><strong>Admin</strong></td>
+                    <td>Monitor transactions, manage fees, resolve disputes</td>
+                    <td>Administrator</td>
+                </tr>
+            </table>
+        </section>
 
-      <section>
-        <h2><i class="fas fa-users"></i> 3. System Overview & User Roles</h2>
+        <section>
+            <h2><i class="fas fa-cogs"></i> 4. Functional Requirements</h2>
+            
+            <h3><i class="fas fa-shield-alt"></i> 4.1 Authentication & Security</h3>
+            <table>
+                <tr>
+                    <th>Feature</th>
+                    <th>Description</th>
+                    <th>Priority</th>
+                </tr>
+                <tr>
+                    <td>User Login</td>
+                    <td>Email/Phone OTP via Supabase Auth</td>
+                    <td>High</td>
+                </tr>
+                <tr>
+                    <td>Identity Verification</td>
+                    <td>Two-step photo ID verification</td>
+                    <td>Medium</td>
+                </tr>
+                <tr>
+                    <td>Data Encryption</td>
+                    <td>End-to-end transaction encryption</td>
+                    <td>High</td>
+                </tr>
+            </table>
 
-        <div class="chart-container">
-          <canvas id="userRoleChart"></canvas>
-        </div>
+            <h3><i class="fas fa-box-open"></i> 4.2 Item Management</h3>
+            <table>
+                <tr>
+                    <th>Function</th>
+                    <th>Borrower</th>
+                    <th>Lender</th>
+                    <th>Admin</th>
+                </tr>
+                <tr>
+                    <td>View Items</td>
+                    <td><i class="fas fa-check-circle" style="color: var(--secondary);"></i></td>
+                    <td><i class="fas fa-check-circle" style="color: var(--secondary);"></i></td>
+                    <td><i class="fas fa-check-circle" style="color: var(--secondary);"></i></td>
+                </tr>
+                <tr>
+                    <td>Add Items</td>
+                    <td><i class="fas fa-times-circle" style="color: var(--danger);"></i></td>
+                    <td><i class="fas fa-check-circle" style="color: var(--secondary);"></i></td>
+                    <td><i class="fas fa-check-circle" style="color: var(--secondary);"></i></td>
+                </tr>
+                <tr>
+                    <td>Edit Items</td>
+                    <td><i class="fas fa-times-circle" style="color: var(--danger);"></i></td>
+                    <td><i class="fas fa-check-circle" style="color: var(--secondary);"></i></td>
+                    <td><i class="fas fa-check-circle" style="color: var(--secondary);"></i></td>
+                </tr>
+                <tr>
+                    <td>Delete Items</td>
+                    <td><i class="fas fa-times-circle" style="color: var(--danger);"></i></td>
+                    <td><i class="fas fa-check-circle" style="color: var(--secondary);"></i></td>
+                    <td><i class="fas fa-check-circle" style="color: var(--secondary);"></i></td>
+                </tr>
+                <tr>
+                    <td>Filter Items</td>
+                    <td><i class="fas fa-check-circle" style="color: var(--secondary);"></i></td>
+                    <td><i class="fas fa-times-circle" style="color: var(--danger);"></i></td>
+                    <td><i class="fas fa-times-circle" style="color: var(--danger);"></i></td>
+                </tr>
+            </table>
 
-        <h3><i class="fas fa-user-check"></i> User Roles & Responsibilities</h3>
-        <table>
-          <tr>
-            <th>Role</th>
-            <th>Key Responsibilities</th>
-            <th>Access Level</th>
-          </tr>
-          <tr>
-            <td><strong>Borrower</strong></td>
-            <td>
-              Search items, request rentals, NFC confirmation, earn rewards
-            </td>
-            <td>Standard User</td>
-          </tr>
-          <tr>
-            <td><strong>Lender</strong></td>
-            <td>
-              List items, manage availability, accept requests, track earnings
-            </td>
-            <td>Standard User</td>
-          </tr>
-          <tr>
-            <td><strong>Admin</strong></td>
-            <td>Monitor transactions, manage fees, resolve disputes</td>
-            <td>Administrator</td>
-          </tr>
-        </table>
-      </section>
+            <h3><i class="fas fa-exchange-alt"></i> 4.3 Rental Workflow</h3>
+            <div class="workflow-diagram">
+                <h4>Rental Process Flow</h4>
+                <div class="mermaid">
+                    graph TD
+                        A[Lender Lists Item] --> B[Borrower Discovers Item]
+                        B --> C[Request Rental]
+                        C --> D{Lender Accepts?}
+                        D -->|Yes| E[NFC Handshake]
+                        D -->|No| F[Request Denied]
+                        E --> G[Rental Period]
+                        G --> H[NFC Return]
+                        H --> I[Release Deposit]
+                        I --> J[Rate Experience]
+                        J --> K[Earn Rewards]
+                </div>
+            </div>
+        </section>
 
-      <section>
-        <h2><i class="fas fa-cogs"></i> 4. Functional Requirements</h2>
+        <section>
+            <h2><i class="fas fa-coins"></i> 5. Reward & Monetization System</h2>
+            
+            <h3><i class="fas fa-percentage"></i> 5.1 Platform Fee Structure</h3>
+            <table>
+                <tr>
+                    <th>Trust Level</th>
+                    <th>Platform Fee</th>
+                    <th>Benefits</th>
+                </tr>
+                <tr>
+                    <td>New User</td>
+                    <td>15%</td>
+                    <td>Basic access</td>
+                </tr>
+                <tr>
+                    <td>Trusted (10+ rentals)</td>
+                    <td>10%</td>
+                    <td>Reduced fees</td>
+                </tr>
+                <tr>
+                    <td>Premium (50+ rentals)</td>
+                    <td>5%</td>
+                    <td>Priority support</td>
+                </tr>
+            </table>
 
-        <h3><i class="fas fa-shield-alt"></i> 4.1 Authentication & Security</h3>
-        <table>
-          <tr>
-            <th>Feature</th>
-            <th>Description</th>
-            <th>Priority</th>
-          </tr>
-          <tr>
-            <td>User Login</td>
-            <td>Email/Phone OTP via Supabase Auth</td>
-            <td>High</td>
-          </tr>
-          <tr>
-            <td>Identity Verification</td>
-            <td>Two-step photo ID verification</td>
-            <td>Medium</td>
-          </tr>
-          <tr>
-            <td>Data Encryption</td>
-            <td>End-to-end transaction encryption</td>
-            <td>High</td>
-          </tr>
-        </table>
+            <h3><i class="fas fa-crown"></i> 5.2 Membership Tiers</h3>
+            <div class="membership-tiers">
+                <div class="tier-card basic">
+                    <div class="tier-name">Basic</div>
+                    <div class="tier-price">Free</div>
+                    <ul class="tier-features">
+                        <li><i class="fas fa-check"></i> Standard listing visibility</li>
+                        <li><i class="fas fa-check"></i> 5-15% platform fee</li>
+                        <li><i class="fas fa-check"></i> Basic customer support</li>
+                        <li><i class="fas fa-check"></i> Earn reward points</li>
+                    </ul>
+                </div>
+                <div class="tier-card plus">
+                    <div class="tier-name">Plus</div>
+                    <div class="tier-price">€3/month</div>
+                    <ul class="tier-features">
+                        <li><i class="fas fa-check"></i> Enhanced listing visibility</li>
+                        <li><i class="fas fa-check"></i> 3-12% platform fee</li>
+                        <li><i class="fas fa-check"></i> Priority customer support</li>
+                        <li><i class="fas fa-check"></i> Double reward points</li>
+                        <li><i class="fas fa-check"></i> Advanced analytics</li>
+                    </ul>
+                </div>
+                <div class="tier-card pro">
+                    <div class="tier-name">Pro</div>
+                    <div class="tier-price">€6/month</div>
+                    <ul class="tier-features">
+                        <li><i class="fas fa-check"></i> Featured listing placement</li>
+                        <li><i class="fas fa-check"></i> 1-8% platform fee</li>
+                        <li><i class="fas fa-check"></i> 24/7 premium support</li>
+                        <li><i class="fas fa-check"></i> Triple reward points</li>
+                        <li><i class="fas fa-check"></i> Business tools & insights</li>
+                        <li><i class="fas fa-check"></i> API access</li>
+                    </ul>
+                </div>
+            </div>
 
-        <h3><i class="fas fa-box-open"></i> 4.2 Item Management</h3>
-        <table>
-          <tr>
-            <th>Function</th>
-            <th>Borrower</th>
-            <th>Lender</th>
-            <th>Admin</th>
-          </tr>
-          <tr>
-            <td>View Items</td>
-            <td>
-              <i
-                class="fas fa-check-circle"
-                style="color: var(--secondary)"
-              ></i>
-            </td>
-            <td>
-              <i
-                class="fas fa-check-circle"
-                style="color: var(--secondary)"
-              ></i>
-            </td>
-            <td>
-              <i
-                class="fas fa-check-circle"
-                style="color: var(--secondary)"
-              ></i>
-            </td>
-          </tr>
-          <tr>
-            <td>Add Items</td>
-            <td>
-              <i class="fas fa-times-circle" style="color: var(--danger)"></i>
-            </td>
-            <td>
-              <i
-                class="fas fa-check-circle"
-                style="color: var(--secondary)"
-              ></i>
-            </td>
-            <td>
-              <i
-                class="fas fa-check-circle"
-                style="color: var(--secondary)"
-              ></i>
-            </td>
-          </tr>
-          <tr>
-            <td>Edit Items</td>
-            <td>
-              <i class="fas fa-times-circle" style="color: var(--danger)"></i>
-            </td>
-            <td>
-              <i
-                class="fas fa-check-circle"
-                style="color: var(--secondary)"
-              ></i>
-            </td>
-            <td>
-              <i
-                class="fas fa-check-circle"
-                style="color: var(--secondary)"
-              ></i>
-            </td>
-          </tr>
-          <tr>
-            <td>Delete Items</td>
-            <td>
-              <i class="fas fa-times-circle" style="color: var(--danger)"></i>
-            </td>
-            <td>
-              <i
-                class="fas fa-check-circle"
-                style="color: var(--secondary)"
-              ></i>
-            </td>
-            <td>
-              <i
-                class="fas fa-check-circle"
-                style="color: var(--secondary)"
-              ></i>
-            </td>
-          </tr>
-          <tr>
-            <td>Filter Items</td>
-            <td>
-              <i
-                class="fas fa-check-circle"
-                style="color: var(--secondary)"
-              ></i>
-            </td>
-            <td>
-              <i class="fas fa-times-circle" style="color: var(--danger)"></i>
-            </td>
-            <td>
-              <i class="fas fa-times-circle" style="color: var(--danger)"></i>
-            </td>
-          </tr>
-        </table>
+            <h3><i class="fas fa-gift"></i> 5.3 Reward Points Economy</h3>
+            <div class="workflow-diagram">
+                <div class="mermaid">
+                    graph LR
+                        A[Complete Rental] --> B[Earn Points]
+                        B --> C[Accumulate Rewards]
+                        C --> D{Redeem Options}
+                        D --> E[Free Rentals]
+                        D --> F[Listing Boosts]
+                        D --> G[Cash Withdrawal]
+                </div>
+                <p><strong>Point Conversion</strong>: 1000 points = €10</p>
+            </div>
+        </section>
 
-        <h3><i class="fas fa-exchange-alt"></i> 4.3 Rental Workflow</h3>
-        <div class="workflow-diagram">
-          <h4>Rental Process Flow</h4>
-          <div class="mermaid">
-            graph TD A[Lender Lists Item] --> B[Borrower Discovers Item] B -->
-            C[Request Rental] C --> D{Lender Accepts?} D -->|Yes| E[NFC
-            Handshake] D -->|No| F[Request Denied] E --> G[Rental Period] G -->
-            H[NFC Return] H --> I[Release Deposit] I --> J[Rate Experience] J
-            --> K[Earn Rewards]
-          </div>
-        </div>
-      </section>
+        <section>
+            <h2><i class="fas fa-layer-group"></i> 6. Technical Architecture</h2>
+            
+            <h3><i class="fas fa-code"></i> 6.1 Technology Stack</h3>
+            <div class="tech-stack">
+                <div class="tech-category">
+                    <h4><i class="fas fa-paint-brush"></i> Frontend</h4>
+                    <p><strong>Flutter</strong> - Cross-platform UI development</p>
+                    <p><strong>Riverpod</strong> - State management</p>
+                    <p><strong>Isar DB</strong> - Offline-first storage</p>
+                </div>
+                <div class="tech-category">
+                    <h4><i class="fas fa-server"></i> Backend & Services</h4>
+                    <p><strong>Supabase/Firebase</strong> - Auth, DB, Storage</p>
+                    <p><strong>Stripe/PayPal</strong> - Payment processing</p>
+                    <p><strong>Google Maps</strong> - Location services</p>
+                </div>
+                <div class="tech-category">
+                    <h4><i class="fas fa-microchip"></i> Hardware Integration</h4>
+                    <p><strong>flutter_nfc_kit</strong> - Item verification</p>
+                    <p><strong>nearby_connections</strong> - Proximity detection</p>
+                    <p><strong>geolocator</strong> - Location tracking</p>
+                </div>
+            </div>
 
-      <section>
-        <h2><i class="fas fa-coins"></i> 5. Reward & Monetization System</h2>
-
-        <h3><i class="fas fa-percentage"></i> 5.1 Platform Fee Structure</h3>
-        <table>
-          <tr>
-            <th>Trust Level</th>
-            <th>Platform Fee</th>
-            <th>Benefits</th>
-          </tr>
-          <tr>
-            <td>New User</td>
-            <td>15%</td>
-            <td>Basic access</td>
-          </tr>
-          <tr>
-            <td>Trusted (10+ rentals)</td>
-            <td>10%</td>
-            <td>Reduced fees</td>
-          </tr>
-          <tr>
-            <td>Premium (50+ rentals)</td>
-            <td>5%</td>
-            <td>Priority support</td>
-          </tr>
-        </table>
-
-        <h3><i class="fas fa-crown"></i> 5.2 Membership Tiers</h3>
-        <div class="membership-tiers">
-          <div class="tier-card basic">
-            <div class="tier-name">Basic</div>
-            <div class="tier-price">Free</div>
-            <ul class="tier-features">
-              <li><i class="fas fa-check"></i> Standard listing visibility</li>
-              <li><i class="fas fa-check"></i> 5-15% platform fee</li>
-              <li><i class="fas fa-check"></i> Basic customer support</li>
-              <li><i class="fas fa-check"></i> Earn reward points</li>
-            </ul>
-          </div>
-          <div class="tier-card plus">
-            <div class="tier-name">Plus</div>
-            <div class="tier-price">€3/month</div>
-            <ul class="tier-features">
-              <li><i class="fas fa-check"></i> Enhanced listing visibility</li>
-              <li><i class="fas fa-check"></i> 3-12% platform fee</li>
-              <li><i class="fas fa-check"></i> Priority customer support</li>
-              <li><i class="fas fa-check"></i> Double reward points</li>
-              <li><i class="fas fa-check"></i> Advanced analytics</li>
-            </ul>
-          </div>
-          <div class="tier-card pro">
-            <div class="tier-name">Pro</div>
-            <div class="tier-price">€6/month</div>
-            <ul class="tier-features">
-              <li><i class="fas fa-check"></i> Featured listing placement</li>
-              <li><i class="fas fa-check"></i> 1-8% platform fee</li>
-              <li><i class="fas fa-check"></i> 24/7 premium support</li>
-              <li><i class="fas fa-check"></i> Triple reward points</li>
-              <li><i class="fas fa-check"></i> Business tools & insights</li>
-              <li><i class="fas fa-check"></i> API access</li>
-            </ul>
-          </div>
-        </div>
-
-        <h3><i class="fas fa-gift"></i> 5.3 Reward Points Economy</h3>
-        <div class="workflow-diagram">
-          <div class="mermaid">
-            graph LR A[Complete Rental] --> B[Earn Points] B --> C[Accumulate
-            Rewards] C --> D{Redeem Options} D --> E[Free Rentals] D -->
-            F[Listing Boosts] D --> G[Cash Withdrawal]
-          </div>
-          <p><strong>Point Conversion</strong>: 1000 points = €10</p>
-        </div>
-      </section>
-
-      <section>
-        <h2><i class="fas fa-layer-group"></i> 6. Technical Architecture</h2>
-
-        <h3><i class="fas fa-code"></i> 6.1 Technology Stack</h3>
-        <div class="tech-stack">
-          <div class="tech-category">
-            <h4><i class="fas fa-paint-brush"></i> Frontend</h4>
-            <p><strong>Flutter</strong> - Cross-platform UI development</p>
-            <p><strong>Riverpod</strong> - State management</p>
-            <p><strong>Isar DB</strong> - Offline-first storage</p>
-          </div>
-          <div class="tech-category">
-            <h4><i class="fas fa-server"></i> Backend & Services</h4>
-            <p><strong>Supabase/Firebase</strong> - Auth, DB, Storage</p>
-            <p><strong>Stripe/PayPal</strong> - Payment processing</p>
-            <p><strong>Google Maps</strong> - Location services</p>
-          </div>
-          <div class="tech-category">
-            <h4><i class="fas fa-microchip"></i> Hardware Integration</h4>
-            <p><strong>flutter_nfc_kit</strong> - Item verification</p>
-            <p><strong>nearby_connections</strong> - Proximity detection</p>
-            <p><strong>geolocator</strong> - Location tracking</p>
-          </div>
-        </div>
-
-        <h3><i class="fas fa-sitemap"></i> 6.2 System Architecture</h3>
-        <div class="workflow-diagram">
-          <pre
-            style="
-              background: var(--surface-alt);
-              padding: 20px;
-              border-radius: var(--border-radius);
-              overflow-x: auto;
-              color: var(--text);
-            "
-          >
+            <h3><i class="fas fa-sitemap"></i> 6.2 System Architecture</h3>
+            <div class="workflow-diagram">
+                <pre style="background: var(--surface-alt); padding: 20px; border-radius: var(--border-radius); overflow-x: auto; color: var(--text);">
 lib/
 ├── data/
 │   ├── models/ (Item, User, Transaction, Rating)
@@ -956,466 +851,300 @@ lib/
 └── ui/
     ├── screens/ (Home, Map, Add Item, Wallet, Profile)
     └── widgets/ (Reusable components)
-                </pre
-          >
-        </div>
-      </section>
+                </pre>
+            </div>
+        </section>
 
-      <section>
-        <h2>
-          <i class="fas fa-chart-line"></i> 7. Non-Functional Requirements
-        </h2>
+        <section>
+            <h2><i class="fas fa-chart-line"></i> 7. Non-Functional Requirements</h2>
+            
+            <h3><i class="fas fa-tachometer-alt"></i> 7.1 Performance Metrics</h3>
+            <table>
+                <tr>
+                    <th>Metric</th>
+                    <th>Target</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>Response Time</td>
+                    <td>&lt; 2 seconds</td>
+                    <td><span class="status-badge status-planned"><i class="fas fa-clock"></i> Planned</span></td>
+                </tr>
+                <tr>
+                    <td>Uptime</td>
+                    <td>99%</td>
+                    <td><span class="status-badge status-planned"><i class="fas fa-clock"></i> Planned</span></td>
+                </tr>
+                <tr>
+                    <td>User Capacity</td>
+                    <td>1M active users</td>
+                    <td><span class="status-badge status-scalable"><i class="fas fa-expand-arrows-alt"></i> Scalable</span></td>
+                </tr>
+                <tr>
+                    <td>Offline Support</td>
+                    <td>Full functionality</td>
+                    <td><span class="status-badge status-implemented"><i class="fas fa-check-circle"></i> Implemented</span></td>
+                </tr>
+            </table>
 
-        <h3><i class="fas fa-tachometer-alt"></i> 7.1 Performance Metrics</h3>
-        <table>
-          <tr>
-            <th>Metric</th>
-            <th>Target</th>
-            <th>Status</th>
-          </tr>
-          <tr>
-            <td>Response Time</td>
-            <td>&lt; 2 seconds</td>
-            <td>
-              <span class="status-badge status-planned"
-                ><i class="fas fa-clock"></i> Planned</span
-              >
-            </td>
-          </tr>
-          <tr>
-            <td>Uptime</td>
-            <td>99%</td>
-            <td>
-              <span class="status-badge status-planned"
-                ><i class="fas fa-clock"></i> Planned</span
-              >
-            </td>
-          </tr>
-          <tr>
-            <td>User Capacity</td>
-            <td>1M active users</td>
-            <td>
-              <span class="status-badge status-scalable"
-                ><i class="fas fa-expand-arrows-alt"></i> Scalable</span
-              >
-            </td>
-          </tr>
-          <tr>
-            <td>Offline Support</td>
-            <td>Full functionality</td>
-            <td>
-              <span class="status-badge status-implemented"
-                ><i class="fas fa-check-circle"></i> Implemented</span
-              >
-            </td>
-          </tr>
-        </table>
+            <h3><i class="fas fa-shield-alt"></i> 7.2 Security Compliance</h3>
+            <table>
+                <tr>
+                    <th>Area</th>
+                    <th>Measures</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>Data Protection</td>
+                    <td>E2E encryption, secure storage</td>
+                    <td><span class="status-badge status-planned"><i class="fas fa-clock"></i> Planned</span></td>
+                </tr>
+                <tr>
+                    <td>Identity</td>
+                    <td>Two-step verification</td>
+                    <td><span class="status-badge status-planned"><i class="fas fa-clock"></i> Planned</span></td>
+                </tr>
+                <tr>
+                    <td>Fraud Prevention</td>
+                    <td>Detection algorithms</td>
+                    <td><span class="status-badge status-planned"><i class="fas fa-clock"></i> Planned</span></td>
+                </tr>
+                <tr>
+                    <td>Financial Security</td>
+                    <td>Escrow payments</td>
+                    <td><span class="status-badge status-implemented"><i class="fas fa-check-circle"></i> Implemented</span></td>
+                </tr>
+            </table>
+        </section>
 
-        <h3><i class="fas fa-shield-alt"></i> 7.2 Security Compliance</h3>
-        <table>
-          <tr>
-            <th>Area</th>
-            <th>Measures</th>
-            <th>Status</th>
-          </tr>
-          <tr>
-            <td>Data Protection</td>
-            <td>E2E encryption, secure storage</td>
-            <td>
-              <span class="status-badge status-planned"
-                ><i class="fas fa-clock"></i> Planned</span
-              >
-            </td>
-          </tr>
-          <tr>
-            <td>Identity</td>
-            <td>Two-step verification</td>
-            <td>
-              <span class="status-badge status-planned"
-                ><i class="fas fa-clock"></i> Planned</span
-              >
-            </td>
-          </tr>
-          <tr>
-            <td>Fraud Prevention</td>
-            <td>Detection algorithms</td>
-            <td>
-              <span class="status-badge status-planned"
-                ><i class="fas fa-clock"></i> Planned</span
-              >
-            </td>
-          </tr>
-          <tr>
-            <td>Financial Security</td>
-            <td>Escrow payments</td>
-            <td>
-              <span class="status-badge status-implemented"
-                ><i class="fas fa-check-circle"></i> Implemented</span
-              >
-            </td>
-          </tr>
-        </table>
-      </section>
+        <section>
+            <h2><i class="fas fa-road"></i> 8. Future Roadmap</h2>
+            
+            <h3><i class="fas fa-chart-bar"></i> Enhancement Timeline</h3>
+            <div class="chart-container">
+                <canvas id="timelineChart"></canvas>
+            </div>
 
-      <section>
-        <h2><i class="fas fa-road"></i> 8. Future Roadmap</h2>
+            <h3><i class="fas fa-lightbulb"></i> Planned Enhancements</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3><i class="fas fa-robot"></i> AI Pricing Recommendations</h3>
+                    <p>Smart suggestions for optimal rental rates based on market demand and item condition</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-shield-alt"></i> In-App Insurance</h3>
+                    <p>Optional coverage for item damage or loss during rental periods</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-link"></i> Blockchain Integration</h3>
+                    <p>Transparent and immutable transaction records for trust and verification</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-store"></i> Business Hub Integration</h3>
+                    <p>Partner locations for secure item storage and convenient pickup points</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-money-bill-wave"></i> Multi-Currency Support</h3>
+                    <p>Cross-border transaction capability with real-time currency conversion</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-chart-pie"></i> Advanced Analytics</h3>
+                    <p>Detailed insights for lenders on rental performance and optimization</p>
+                </div>
+            </div>
+        </section>
 
-        <h3><i class="fas fa-chart-bar"></i> Enhancement Timeline</h3>
-        <div class="chart-container">
-          <canvas id="timelineChart"></canvas>
-        </div>
+        <section>
+            <h2><i class="fas fa-trophy"></i> 9. Success Metrics & KPIs</h2>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">User Acquisition</div>
+                    <div class="metric-value">10,000</div>
+                    <div class="metric-label">in 6 months (MAU)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Transaction Volume</div>
+                    <div class="metric-value">1,000</div>
+                    <div class="metric-label">rentals per month</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">User Retention</div>
+                    <div class="metric-value">60%</div>
+                    <div class="metric-label">monthly retention rate</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Revenue Target</div>
+                    <div class="metric-value">€5,000</div>
+                    <div class="metric-label">monthly platform fees</div>
+                </div>
+            </div>
+        </section>
 
-        <h3><i class="fas fa-lightbulb"></i> Planned Enhancements</h3>
-        <div class="feature-grid">
-          <div class="feature-card">
-            <h3><i class="fas fa-robot"></i> AI Pricing Recommendations</h3>
-            <p>
-              Smart suggestions for optimal rental rates based on market demand
-              and item condition
-            </p>
-          </div>
-          <div class="feature-card">
-            <h3><i class="fas fa-shield-alt"></i> In-App Insurance</h3>
-            <p>
-              Optional coverage for item damage or loss during rental periods
-            </p>
-          </div>
-          <div class="feature-card">
-            <h3><i class="fas fa-link"></i> Blockchain Integration</h3>
-            <p>
-              Transparent and immutable transaction records for trust and
-              verification
-            </p>
-          </div>
-          <div class="feature-card">
-            <h3><i class="fas fa-store"></i> Business Hub Integration</h3>
-            <p>
-              Partner locations for secure item storage and convenient pickup
-              points
-            </p>
-          </div>
-          <div class="feature-card">
-            <h3>
-              <i class="fas fa-money-bill-wave"></i> Multi-Currency Support
-            </h3>
-            <p>
-              Cross-border transaction capability with real-time currency
-              conversion
-            </p>
-          </div>
-          <div class="feature-card">
-            <h3><i class="fas fa-chart-pie"></i> Advanced Analytics</h3>
-            <p>
-              Detailed insights for lenders on rental performance and
-              optimization
-            </p>
-          </div>
-        </div>
-      </section>
+        <section>
+            <h2><i class="fas fa-file-signature"></i> 10. Approval & Sign-off</h2>
+            
+            <table class="approval-table">
+                <tr>
+                    <th>Role</th>
+                    <th>Name</th>
+                    <th>Date</th>
+                </tr>
+                <tr>
+                    <td>Prepared By</td>
+                    <td>Raven (Developer)</td>
+                    <td>2025-11-30</td>
+                </tr>
+                <tr>
+                    <td>Reviewed By</td>
+                    <td>Diana (Project Partner)</td>
+                    <td>2025-11-30</td>
+                </tr>
+            </table>
+        </section>
 
-      <section>
-        <h2><i class="fas fa-trophy"></i> 9. Success Metrics & KPIs</h2>
-
-        <div class="metrics-grid">
-          <div class="metric-card">
-            <div class="metric-label">User Acquisition</div>
-            <div class="metric-value">10,000</div>
-            <div class="metric-label">in 6 months (MAU)</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Transaction Volume</div>
-            <div class="metric-value">1,000</div>
-            <div class="metric-label">rentals per month</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">User Retention</div>
-            <div class="metric-value">60%</div>
-            <div class="metric-label">monthly retention rate</div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-label">Revenue Target</div>
-            <div class="metric-value">€5,000</div>
-            <div class="metric-label">monthly platform fees</div>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2><i class="fas fa-file-signature"></i> 10. Approval & Sign-off</h2>
-
-        <table class="approval-table">
-          <tr>
-            <th>Role</th>
-            <th>Name</th>
-            <th>Date</th>
-          </tr>
-          <tr>
-            <td>Prepared By</td>
-            <td>Raven (Developer)</td>
-            <td>2025-11-30</td>
-          </tr>
-          <tr>
-            <td>Reviewed By</td>
-            <td>Diana (Project Partner)</td>
-            <td>2025-11-30</td>
-          </tr>
-        </table>
-      </section>
-
-      <footer>
-        <div class="confidential">
-          <i class="fas fa-lock"></i> CONFIDENTIAL: This document contains
-          proprietary information and should not be distributed without
-          authorization.
-        </div>
-      </footer>
+        <footer>
+            <div class="confidential">
+                <i class="fas fa-lock"></i> CONFIDENTIAL: This document contains proprietary information and should not be distributed without authorization.
+            </div>
+        </footer>
     </div>
 
     <button class="back-to-top" id="backToTop">
-      <i class="fas fa-arrow-up"></i>
+        <i class="fas fa-arrow-up"></i>
     </button>
 
     <script>
-      // Initialize Mermaid
-      mermaid.initialize({
-        startOnLoad: true,
-        theme: "dark",
-        securityLevel: "loose",
-        flowchart: {
-          useMaxWidth: true,
-          htmlLabels: true,
-        },
-      });
-
-      // Theme Toggle
-      const themeToggle = document.getElementById("themeToggle");
-      const body = document.body;
-
-      themeToggle.addEventListener("click", () => {
-        if (body.classList.contains("dark-mode")) {
-          body.classList.remove("dark-mode");
-          body.classList.add("light-mode");
-          themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-        } else {
-          body.classList.remove("light-mode");
-          body.classList.add("dark-mode");
-          themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-        }
-      });
-
-      // Back to Top Button
-      const backToTop = document.getElementById("backToTop");
-
-      window.addEventListener("scroll", () => {
-        if (window.pageYOffset > 300) {
-          backToTop.style.display = "flex";
-        } else {
-          backToTop.style.display = "none";
-        }
-      });
-
-      backToTop.addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
-
-      // User Role Distribution Chart
-      const userRoleCtx = document
-        .getElementById("userRoleChart")
-        .getContext("2d");
-      new Chart(userRoleCtx, {
-        type: "doughnut",
-        data: {
-          labels: ["Borrowers (60%)", "Lenders (35%)", "Admins (5%)"],
-          datasets: [
-            {
-              data: [60, 35, 5],
-              backgroundColor: ["#3498db", "#2ecc71", "#e74c3c"],
-              borderWidth: 2,
-              borderColor: body.classList.contains("dark-mode")
-                ? "#1e293b"
-                : "#ffffff",
+        // Initialize Mermaid
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: 'dark',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true
+            }
+        });
+        
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+        
+        // Back to Top Button
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.style.display = 'flex';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+        
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        // User Role Distribution Chart
+        const userRoleCtx = document.getElementById('userRoleChart').getContext('2d');
+        new Chart(userRoleCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Borrowers (60%)', 'Lenders (35%)', 'Admins (5%)'],
+                datasets: [{
+                    data: [60, 35, 5],
+                    backgroundColor: ['#3498db', '#2ecc71', '#e74c3c'],
+                    borderWidth: 2,
+                    borderColor: body.classList.contains('dark-mode') ? '#1e293b' : '#ffffff'
+                }]
             },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            title: {
-              display: true,
-              text: "User Role Distribution",
-              font: { size: 18, weight: "bold" },
-              color: body.classList.contains("dark-mode")
-                ? "#f1f5f9"
-                : "#0f172a",
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'User Role Distribution',
+                        font: { size: 18, weight: 'bold' },
+                        color: body.classList.contains('dark-mode') ? '#f1f5f9' : '#0f172a'
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: body.classList.contains('dark-mode') ? '#cbd5e1' : '#475569',
+                            font: { size: 14 }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Timeline Chart
+        const timelineCtx = document.getElementById('timelineChart').getContext('2d');
+        new Chart(timelineCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Phase 1: Core', 'Phase 2: Rewards', 'Phase 3: AI', 'Phase 4: Business'],
+                datasets: [{
+                    label: 'Development Months',
+                    data: [4, 3, 4, 3],
+                    backgroundColor: ['#3498db', '#2ecc71', '#9b59b6', '#e74c3c'],
+                    borderWidth: 0,
+                    borderRadius: 8
+                }]
             },
-            legend: {
-              position: "bottom",
-              labels: {
-                color: body.classList.contains("dark-mode")
-                  ? "#cbd5e1"
-                  : "#475569",
-                font: { size: 14 },
-              },
-            },
-          },
-        },
-      });
-
-      // Timeline Chart
-      const timelineCtx = document
-        .getElementById("timelineChart")
-        .getContext("2d");
-      new Chart(timelineCtx, {
-        type: "bar",
-        data: {
-          labels: [
-            "Phase 1: Core",
-            "Phase 2: Rewards",
-            "Phase 3: AI",
-            "Phase 4: Business",
-          ],
-          datasets: [
-            {
-              label: "Development Months",
-              data: [4, 3, 4, 3],
-              backgroundColor: ["#3498db", "#2ecc71", "#9b59b6", "#e74c3c"],
-              borderWidth: 0,
-              borderRadius: 8,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            title: {
-              display: true,
-              text: "Development Timeline (Months)",
-              font: { size: 18, weight: "bold" },
-              color: body.classList.contains("dark-mode")
-                ? "#f1f5f9"
-                : "#0f172a",
-            },
-            legend: {
-              display: false,
-            },
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              title: {
-                display: true,
-                text: "Months",
-                color: body.classList.contains("dark-mode")
-                  ? "#cbd5e1"
-                  : "#475569",
-              },
-              grid: {
-                color: body.classList.contains("dark-mode")
-                  ? "rgba(255,255,255,0.1)"
-                  : "rgba(0,0,0,0.1)",
-              },
-              ticks: {
-                color: body.classList.contains("dark-mode")
-                  ? "#cbd5e1"
-                  : "#475569",
-              },
-            },
-            x: {
-              grid: {
-                display: false,
-              },
-              ticks: {
-                color: body.classList.contains("dark-mode")
-                  ? "#cbd5e1"
-                  : "#475569",
-              },
-            },
-          },
-        },
-      });
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Development Timeline (Months)',
+                        font: { size: 18, weight: 'bold' },
+                        color: body.classList.contains('dark-mode') ? '#f1f5f9' : '#0f172a'
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Months',
+                            color: body.classList.contains('dark-mode') ? '#cbd5e1' : '#475569'
+                        },
+                        grid: {
+                            color: body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
+                        },
+                        ticks: {
+                            color: body.classList.contains('dark-mode') ? '#cbd5e1' : '#475569'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: body.classList.contains('dark-mode') ? '#cbd5e1' : '#475569'
+                        }
+                    }
+                }
+            }
+        });
     </script>
-
-    <!-- 🔒 Password Protection Overlay -->
-    <div
-      id="authOverlay"
-      style="
-        position: fixed;
-        inset: 0;
-        background: rgba(15, 23, 42, 0.9);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        z-index: 9999;
-        color: white;
-        font-family: 'Poppins', sans-serif;
-        backdrop-filter: blur(10px);
-      "
-    >
-      <h2 style="margin-bottom: 20px; font-size: 2em">Enter Password</h2>
-      <input
-        type="password"
-        id="passwordInput"
-        placeholder="••••••"
-        style="
-          padding: 12px 20px;
-          border-radius: 8px;
-          border: none;
-          outline: none;
-          font-size: 1.1em;
-          text-align: center;
-          width: 250px;
-          margin-bottom: 15px;
-        "
-      />
-      <button
-        id="submitPassword"
-        style="
-          background: #6366f1;
-          border: none;
-          color: white;
-          padding: 10px 20px;
-          border-radius: 8px;
-          cursor: pointer;
-          font-size: 1em;
-          transition: 0.3s;
-        "
-      >
-        Unlock
-      </button>
-      <p id="errorMsg" style="margin-top: 15px; color: #ef4444; display: none">
-        Incorrect password 😐
-      </p>
-    </div>
-
-    <script>
-      // Lock scrolling while overlay is visible
-      document.body.style.overflow = "hidden";
-
-      const correctPassword = "raven123";
-      const overlay = document.getElementById("authOverlay");
-      const input = document.getElementById("passwordInput");
-      const errorMsg = document.getElementById("errorMsg");
-      const button = document.getElementById("submitPassword");
-
-      function unlock() {
-        if (input.value === correctPassword) {
-          overlay.style.transition = "opacity 0.5s ease";
-          overlay.style.opacity = "0";
-          document.body.style.overflow = "auto"; // ✅ re-enable scroll
-          setTimeout(() => overlay.remove(), 500);
-        } else {
-          errorMsg.style.display = "block";
-          input.value = "";
-        }
-      }
-
-      button.addEventListener("click", unlock);
-      input.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") unlock();
-      });
-    </script>
-  </body>
+</body>
 </html>
